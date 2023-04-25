@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script>
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css">   
+     
+    <title>Remotely control of power supply</title>
+    
+    <style>
+        .center {
+          margin:auto;
+          width: 60%;
+          border: 3px solid #169bcc;
+          padding: 10px;
+          top: auto;
+          left: auto;
+          margin-top: 100px;
+          background-color:#f0f7fe;
+        }
+        
+        </style>
+</head>
+<body>
+    
+    <div class="center">
+        <input type="checkbox" class='toggle' checked data-toggle="toggle">
+        
+       <b> <a class='status'>power supply mode on</a>
+    
+   <br/> <br/>
+  
+
+    <form method="post" action="{{url_for('control')}}"> 
+        <label for="fV"> Set voltage</label>
+        <input type="number" id="fV" name="voltage" value={{a}}><br><br>
+        <label for="FI">Set current </label>
+        <input type="number" id="FI" name="current" value={{b}}><br><br>
+        <input type="submit" class="btn btn-primary" value="Submit">
+    </form>
+  
+
+    <br/> 
+    <form method="get"  > 
+    <div> 
+        <label for="actual_voltage"> Actual voltage </label>
+        <input type="number" name="actual_voltage" id="voltage" value={{c}} />
+        <br/> <br/> 
+    </div>
+    </form>
+    <form method="get"  > 
+        <div> 
+            <label for="actual_current"> Actual current </label>
+            <input type="number" name="actual_current" id="current" value= {{d}}  />
+            <br/> <br/> 
+        </div>
+    </form>
+     
+        </div>
+   
+   
+    <script>
+       
+        $(document).ready(function() {
+            $('.toggle').click(function() {
+             var current_status = $('.status').text();
+             $.ajax({
+              url: "/get_toggled_status",
+              type: "get",
+               data: {status: current_status}, // data will be sent to the server 
+               success: function(response) {
+                $(".status").html(response);
+               },
+               error: function(xhr) {
+                //Do Something to handle error
+               }
+             });
+            });
+          });
+       </script>
+
+  
+
+</body>
+</html>
